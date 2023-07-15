@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TurnosSalud.Models.Medico>
+
+@{
+	ViewData["Title"] = "Medicos";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+	<a asp-action="Create" class="btn btn-outline-primary">Agregar Medico</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Matricula)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Nombre)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Especialidad)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Matricula)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Nombre)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Especialidad.Nombre)
+				</td>
+				<td>
+					<a asp-action="GenerarTurno" asp-route-id="@item.MedicoId">Generar Turnos del Dia</a> |
+					<a asp-action="Edit" asp-route-id="@item.MedicoId">Editar</a> |
+					<a asp-action="Details" asp-route-id="@item.MedicoId">Detalle</a> |
+					<a asp-action="Delete" asp-route-id="@item.MedicoId">Eliminar</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

@@ -1,0 +1,35 @@
+@using TurnosSalud.Models
+
+<header>
+	<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+		<div class="container">
+			<a class="navbar-brand" asp-controller="Home" asp-action="Index">Turnos Salud</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="navbar-collapse collapse justify-content-end">
+				<ul class="navbar-nav d-inline-flex gap-2">
+					@if (User?.Identity?.IsAuthenticated == false)
+					{
+						<a class="btn btn-outline-primary" asp-controller="Usuarios" asp-action="Login">Login</a>
+						<a class="btn btn-outline-secondary" asp-controller="Usuarios" asp-action="Registrar">Sign up</a>
+					}
+					@if (User.IsInRole(RolEnum.Administrador.ToString()))
+					{
+						<a class="btn btn-outline-primary" asp-controller="Turnos" asp-action="Index">Turnos</a>
+						<a class="btn btn-outline-primary" asp-controller="Medicos" asp-action="Index">Medicos</a>
+						<a class="btn btn-outline-primary" asp-controller="Especialidades" asp-action="Index">Especialidades</a>
+						<a class="btn btn-outline-danger" asp-controller="Usuarios" asp-action="Logout">Log Out</a>
+					}
+					@if (User.IsInRole(RolEnum.Paciente.ToString()))
+					{
+						<a class="btn btn-outline-primary" asp-controller="Turnos" asp-action="Index">Turnos Disponibles</a>
+						<a class="btn btn-outline-primary" asp-controller="Turnos" asp-action="Reservados">Mis Turnos</a>
+						<a class="btn btn-outline-danger" asp-controller="Usuarios" asp-action="Logout">Log Out</a>
+					}
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>

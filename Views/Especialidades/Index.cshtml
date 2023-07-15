@@ -1,0 +1,40 @@
+﻿@model IEnumerable<TurnosSalud.Models.Especialidad>
+
+@{
+	ViewData["Title"] = "Especialidades";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="d-flex justify-content-start gap-2">
+	<a asp-action="Create" class="btn btn-outline-primary">Agregar Especialidad</a>
+	<a asp-action="Seed" class="btn btn-outline-secondary">Generar Comunes</a>
+	<form id="deleteAllForm" method="post" asp-action="DeleteAll" onsubmit="confirmDeleteAll(event)">
+		<button type="submit" class="btn btn-outline-danger">Eliminar Todos</button>
+	</form>
+</div>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Nombre)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Nombre)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.EspecialidadId">Editar</a> |
+					<a asp-action="Details" asp-route-id="@item.EspecialidadId">Detalle</a> |
+					<a asp-action="Delete" asp-route-id="@item.EspecialidadId">Eliminar</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

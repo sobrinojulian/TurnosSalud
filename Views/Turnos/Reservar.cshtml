@@ -1,0 +1,36 @@
+﻿@model TurnosSalud.Models.Turno
+
+@{
+	ViewData["Title"] = "Reservar Turno";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Fecha)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Fecha)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Medico.Nombre)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Medico.Nombre)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Medico.Especialidad)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Medico.Especialidad.Nombre)
+		</dd>
+	</dl>
+	<form asp-action="Reservar">
+		<input type="hidden" asp-for="TurnoId" />
+		<input type="submit" value="Reservar" class="btn btn-primary" /> |
+		<a asp-action="Index">Volver</a>
+	</form>
+</div>

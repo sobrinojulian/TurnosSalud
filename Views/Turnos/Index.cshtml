@@ -1,0 +1,106 @@
+﻿@model IEnumerable<TurnosSalud.Models.Turno>
+
+@{
+	ViewData["Title"] = "Turnos";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (User.IsInRole("Administrador"))
+{
+	<div class="d-flex justify-content-start gap-2 mb-3">
+		<a asp-action="Create" class="btn btn-outline-primary">Agregar Turno</a>
+		<a asp-action="Generacion" class="btn btn-outline-primary">Generar Turnos</a>
+		<form id="deleteAllForm" method="post" asp-action="DeleteAll" onsubmit="confirmDeleteAll(event)">
+			<button type="submit" class="btn btn-outline-danger">Eliminar Todos</button>
+		</form>
+	</div>
+}
+
+<div class="col-md-4">
+	<div class="form-group">
+		<label class="control-label">Filtrar por especialidad y disponibilidad:</label>
+		<form method="post">
+			<div class="input-group">
+				@Html.DropDownList("especialidades", (IEnumerable<SelectListItem>)ViewBag.EspecialidadId, "Todas", new { @class = "form-control" })
+				@Html.DropDownList("disponibilidad", new SelectList(new[] { "Todas", "Libres", "Reservadas" }), new { @class = "form-control" })
+				<button type="submit" class="btn btn-primary">Buscar</button>
+			</div>
+		</form>
+	</div>
+
+</div>
+
+<br />
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Fecha)
+			</th>
+			@if (User.IsInRole("Administrador"))
+			{
+				<th>
+					Disponibilidad
+				</th>
+			}
+			<th>
+				@Html.DisplayNameFor(model => model.Medico)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Medico.Especialidad)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Fecha)
+				</td>
+				@if (User.IsInRole("Administrador"))
+				{
+					<td>
+						@if (item.estaLibre())
+						{
+							<span class="badge bg-warning">Libre</span>
+						}
+						else
+						{
+							<span class="badge bg-success">Reservado</span>
+						}
+					</td>
+				}
+				<td>
+					@Html.DisplayFor(modelItem => item.Medico.Nombre)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Medico.Especialidad.Nombre)
+				</td>
+				@if (User.IsInRole("Administrador"))
+				{
+					<td>
+						<!--<a asp-action="Edit" asp-route-id="@item.TurnoId">Editar</a> |-->
+						<a asp-action="Details" asp-route-id="@item.TurnoId">Detalle</a> |
+						<a asp-action="Delete" asp-route-id="@item.TurnoId">Eliminar</a>
+					</td>
+				}
+				@if (User.IsInRole("Paciente"))
+				{
+					<td>
+						@if (item.estaLibre())
+						{
+							<a class="btn btn-primary" asp-action="Reservar" asp-route-id="@item.TurnoId">Reservar</a>
+						}
+						else
+						{
+							<button type="button" class="btn btn-secondary" disabled>Reservar</button>
+						}
+					</td>
+				}
+			</tr>
+		}
+	</tbody>
+</table>
